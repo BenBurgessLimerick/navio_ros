@@ -1,6 +1,11 @@
 
+#include <sys/time.h>
+
 #include <Common/InertialSensor.h>
 #include "AHRS.hpp"
+#include <Common/MPU9250.h>
+#include <Navio2/LSM9DS1.h>
+#include <Common/Util.h>
 
 
 std::unique_ptr <InertialSensor> get_inertial_sensor( std::string sensor_name)

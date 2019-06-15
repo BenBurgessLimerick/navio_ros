@@ -151,7 +151,6 @@ add_dependencies(gps_node navio_ros)
 
 add_executable(imu_node src/navio_ros/imu_node.cpp
 		src/navio_ros/Common/MPU9250.cpp
-		src/navio_ros/Common/InertialSensor.cpp
 		src/navio_ros/Common/AHRS.cpp
 		src/navio_ros/Common/Util.cpp
 		src/navio_ros/Navio2/LSM9DS1.cpp)
