@@ -127,6 +127,7 @@ add_library(navio_ros
 	src/navio_ros/Common/MS5611.cpp
 	src/navio_ros/Common/Ublox.cpp
 	src/navio_ros/Common/Util.cpp
+	src/navio_ros/Common/AHRS.cpp
 	
 	src/navio_ros/Navio2/ADC_Navio2.cpp
 	src/navio_ros/Navio2/LSM9DS1.cpp
@@ -147,6 +148,16 @@ add_executable(gps_node src/navio_ros/gps_node.cpp
 		src/navio_ros/Common/Util.cpp
 		src/navio_ros/Common/Ublox.cpp)
 add_dependencies(gps_node navio_ros)
+
+add_executable(imu_node src/navio_ros/imu_node.cpp
+		src/navio_ros/Common/MPU9250.cpp
+		src/navio_ros/Common/InertialSensor.cpp
+		src/navio_ros/Common/AHRS.cpp
+		src/navio_ros/Common/Util.cpp
+		src/navio_ros/Navio2/LSM9DS1.cpp)
+add_dependencies(imu_node navio_ros)
+
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
