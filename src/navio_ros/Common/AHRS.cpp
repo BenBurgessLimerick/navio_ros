@@ -46,11 +46,22 @@ AHRS::AHRS(std::unique_ptr <InertialSensor> imu)
 }
 
 void AHRS::read_accelerometer(float *ax, float *ay, float *az) {
-    sensor->read_accelerometer(ax, ay, az);
+    float rawX, rawY, rawZ;
+    sensor->read_accelerometer(&rawX, &rawY, &rawZ);
+    *ax = rawX / G_SI;
+    *ay = rawY / G_SI;
+    *az = rawZ / G_SI;
 }
 
 void AHRS::read_gyroscope(float *gx, float *gy, float *gz) {
-    sensor->read_gyroscope(gx, gy, gz);
+    float rawX, rawY, rawZ;
+
+    sensor->read_gyroscope(&rawX, &rawY, &rawZ);
+
+    //TODO: Check this actually converts to rad/sec
+    *gx = rawX * 0.0175 - gyroOffset[0];
+    *gy = rawY * 0.0175 - gyroOffset[1];
+    *gz = rawZ * 0.0175 - gyroOffset[2]; 
 }
 
 

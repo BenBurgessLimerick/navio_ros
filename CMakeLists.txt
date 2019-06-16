@@ -66,4 +66,4 @@ add_executable(imu_node src/navio_ros/imu_node.cpp
 		src/navio_ros/Common/Util.cpp
 		src/navio_ros/Navio2/LSM9DS1.cpp)
 add_dependencies(imu_node navio_ros)
-
+target_link_libraries(imu_node ${catkin_LIBRARIES})

@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 				msg.position_covariance[8] = pos_data[6] / 1000.0;
 				msg.position_covariance_type = sensor_msgs::NavSatFix::COVARIANCE_TYPE_DIAGONAL_KNOWN;
 
-				
+				gps_publisher.publish(msg);
 
 				// std::cout << "Long " << pos_data[1] / 10000000 << std::endl;
 				// std::cout << "Lat: " << pos_data[2] / 10000000 << std::endl;
