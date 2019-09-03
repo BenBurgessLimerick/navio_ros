@@ -67,28 +67,6 @@ void imuLoop(AHRS* ahrs, ros::Publisher publisher)
 
     ahrs->updateIMU(dt);
 
-    msg.orientation.x = ahrs->getX();
-    msg.orientation.y = ahrs->getY();
-    msg.orientation.z = ahrs->getZ();
-    msg.orientation.w = ahrs->getW();
-    //TODO: Covariances
-
-    float gx, gy, gz;
-    ahrs->read_gyroscope(&gx, &gy, &gx);
-    msg.angular_velocity.x = gx;
-    msg.angular_velocity.y = gy;
-    msg.angular_velocity.x = gz;
-    //TODO: Covariances
-
-
-    float ax, ay, az;
-    ahrs->read_accelerometer(&ax, &ay, &ax);
-    msg.linear_acceleration.x = ax;
-    msg.linear_acceleration.y = ay;
-    msg.linear_acceleration.z = az;
-    //TODO: Covariances
-    publisher.publish(msg);
-
     //------------------------ Read Euler angles ------------------------------
 
     ahrs->getEuler(&roll, &pitch, &yaw);
@@ -112,6 +90,28 @@ void imuLoop(AHRS* ahrs, ros::Publisher publisher)
 
         dtsumm = 0;
     }
+
+    msg.orientation.x = ahrs->getX();
+    msg.orientation.y = ahrs->getY();
+    msg.orientation.z = ahrs->getZ();
+    msg.orientation.w = ahrs->getW();
+    //TODO: Covariances
+
+    float gx, gy, gz;
+    ahrs->read_gyroscope(&gx, &gy, &gz);
+    msg.angular_velocity.x = gx;
+    msg.angular_velocity.y = gy;
+    msg.angular_velocity.z = gz;
+    //TODO: Covariances
+
+
+    float ax, ay, az;
+    ahrs->read_accelerometer(&ax, &ay, &az);
+    msg.linear_acceleration.x = ax;
+    msg.linear_acceleration.y = ay;
+    msg.linear_acceleration.z = az;
+    //TODO: Covariances
+    publisher.publish(msg);
 }
 
 //=============================================================================
@@ -142,6 +142,7 @@ int main(int argc, char *argv[])
 	ros::init(argc, argv, "navio_imu_" + sensor_name +  "_node");
 	ros::NodeHandle n;
 	ros::Publisher imu_publisher = n.advertise<sensor_msgs::Imu>("navio_imu_" + sensor_name, 10);
+    ros::Rate loop_rate(100);
 
 
     auto ahrs = std::unique_ptr <AHRS>{new AHRS(move(imu)) };
@@ -149,6 +150,14 @@ int main(int argc, char *argv[])
     //-------------------- Setup gyroscope offset -----------------------------
 
     ahrs->setGyroOffset();
+
+    int count = 0;
+
     while(ros::ok())
         imuLoop(ahrs.get(), imu_publisher);
+        ros::spinOnce();
+
+        loop_rate.sleep();
+        ++count;
+        
 }
